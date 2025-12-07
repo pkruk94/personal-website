@@ -1,76 +1,46 @@
 // Personal Information --> #hero section
-export const name = "Peter Griffin"
-export const designation = "Safety Inspector"
-export const location = "Quahog, Rhode Island"
-export const pronouns = "he/him"
-export const website = "https://petergriffin.com"
+export const name = "Paweł Kruk"
+export const designation = "Software Engineer"
+export const location = "Warsaw, Poland"
+export const website = "https://pawelkruk.me"
 
 // About
-export const about = "An adventurous man working as a safety inspector with a quirky sense of humor. Husband to Louis Griffin. Father of Chris, Brian, and Stewie."
+export const about = "A software engineer with interest in ML/Data, as well as effective team management, strategy, product. Amateur triathlete in free time."
 
 // Work Experience --> #work section
 export const work = [
 	{
-		from: "2001",
+		from: "Jan 2024",
 		to: "Present",
-		role: "Safety Inspector",
-		org: "Quahog Safety Department",
-		org_url: "https://quahog.gov/safety",
-		location: "Quahog, Rhode Island",
-		skills: "Safety Inspection, Risk Assessment, Emergency Response"
+		role: "Software Engineer",
+		org: "Piano Inc.",
+		location: "Warsaw",
 	}
 ]
 
 // Projects --> #project section
 export const projects = [
-	{
-		from: "2023",
-		to: "Present",
-		title: "Project Griffin",
-		description: "A project to improve safety standards in Quahog by implementing innovative safety measures.",
-		url: "https://projectgriffin.com",
-		tech: "Safety Equipment, Training Programs, Community Outreach",
-	},
-	{
-		from: "2023",
-		to: "2022",
-		title: "Family Safety Campaign",
-		description: "An initiative to promote safety awareness among families in Quahog.",
-		url: "https://safefamilyquahog.com",
-		tech: "Workshops, Educational Material, Public Events",
-	},
-	{
-		from: "2020",
-		to: "2021",
-		title: "Road Safety Initiative",
-		description: "A campaign to enhance road safety and reduce accidents in Quahog.",
-		url: "https://roadsafetyquahog.com",
-		tech: "Traffic Analysis, Signage Improvement, Public Awareness",
-	}
 ]
 
 // Education --> #education section
 export const education = [
 	{
-		from: "1995",
-		to: "1999",
-		institute: "Quahog High School",
-		course: "High School Diploma",
-		location: "Quahog, Rhode Island"
+		from: "2013",
+		to: "2017",
+		institute: "Wroclaw University of Science and Technology",
+		course: "Bachelor of Engineering in Power Engineering",
 	},
 	{
-		from: "1999",
-		to: "2003",
-		institute: "Quahog Community College",
-		course: "Bachelor of Science in Safety Management",
-		location: "Quahog, Rhode Island"
+		from: "2022",
+		to: "2023",
+		institute: "Warsaw University of Technology",
+		course: "Postgraduate Degree, Big Data",
 	},
 	{
-		from: "2003",
-		to: "2005",
-		institute: "Safety University",
-		course: "Master of Science in Safety Engineering",
-		location: "Boston, Massachusetts"
+		from: "2025",
+		to: "2026",
+		institute: "Kozminski University",
+		course: "Postgraduate Degree, AI & Dat Driven Business",
 	}
 ]
 
@@ -78,15 +48,11 @@ export const education = [
 export const contact = [
 	{
 		source_name: "Email",
-		source: "peter.griffin@example.com",
-	},
-	{
-		source_name: "Twitter",
-		source: "https://twitter.com/PeterGriffin",
+		source: "pkruk94@gmail.com",
 	},
 	{
 		source_name: "LinkedIn",
-		source: "https://www.linkedin.com/in/peter-griffin",
+		source: "https://www.linkedin.com/in/pawel-kruk-a7b28a139/",
 	},
 ]
 
@@ -94,66 +60,26 @@ export const contact = [
 
 export const certificates = [
 	{
-		issued: "2005",
-		title: "Certified Safety Inspector",
-		org: "National Safety Association",
-		url: "https://certi.com/url",
-		description: "Certification in safety inspection and risk assessment.",
+		issued: "07.04.2025",
+		title: "AWS Certified Machine Learning Engineer – Associate",
+		org: "Amazon Web Services Training and Certification",
+		url: "https://www.credly.com/badges/31755d93-5fd5-4ab4-b6f2-b5e92b36540d/public_url",
+		description: "Earners of this badge have knowledge and skills in developing, deploying, maintaining, and monitoring ML solutions to meet AI/ML objectives. They know how to ingest, transform, validate, and prepare data for ML modeling. They have skills in implementing and operationalizing ML workloads in production. They can select modeling approaches and analyze model performance. They have the expertise to monitor ML solutions and to secure ML systems and resources."
 	},
 	{
-		issued: "2006",
-		title: "Emergency Response Training",
-		org: "Quahog Safety Department",
-		url: "https://certi.com/url",
-		description: "Training in handling emergency situations and crisis management.",
-	},
-	{
-		issued: "2007",
-		title: "Safety Leadership Workshop",
-		org: "Safety Leaders International",
-		url: "https://certi.com/url",
-		description: "Leadership training in safety management and communication.",
+		issued: "28.02.2025",
+		title: "AWS Certified Solutions Architect – Associate",
+		org: "Amazon Web Services Training and Certification",
+		url: "https://www.credly.com/badges/a31a2366-0629-4657-b7d2-e8a68f82a469/public_url",
+		description: "Earners of this certification have a comprehensive understanding of AWS services and technologies. They demonstrated the ability to build secure and robust solutions using architectural design principles based on customer requirements. Badge owners are able to strategically design well-architected distributed systems that are scalable, resilient, efficient, and fault-tolerant.",
 	}
 ]
 
 // Blogs --> #blogs section
 export const blogs = [
-	{
-		date: "12-July, 2023",
-		url: "https://medium.com/",
-		title: "Adventures in Safety Inspection",
-		description: "Join me in my humorous escapades as a safety inspector in Quahog.",
-		publisher: "Quahog Times",
-	},
-	{
-		date: "25-June, 2023",
-		url: "https://medium.com/",
-		title: "Top 10 Safety Tips for Families",
-		description: "Learn the best safety practices for families to ensure a secure environment.",
-		publisher: "Safety Monthly",
-	}
+
 ]
 
 // Achievements --> #achievement section
 export const achievements = [
-	{
-		title: "Safety Hero Award",
-		year: "2020",
-		decription: "Recognized for outstanding contributions to improving safety standards in Quahog."
-	},
-	{
-		title: "Safety Innovation Prize",
-		year: "2018",
-		decription: "Awarded for implementing innovative safety measures that yielded significant improvements."
-	},
-	{
-		title: "Community Safety Ambassador",
-		year: "2015",
-		decription: "Honored for promoting safety awareness and education in the Quahog community."
-	},
-	{
-		title: "Safety Campaign Excellence",
-		year: "2013",
-		decription: "Acknowledged for leading a successful safety campaign that reached thousands of residents."
-	}
 ]
