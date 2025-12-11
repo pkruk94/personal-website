@@ -33,7 +33,7 @@ jobs:
 
       - name: Sync with S3
         run: |
-          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete --exclude
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront cache
         run: |
