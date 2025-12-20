@@ -25,7 +25,8 @@ data "aws_iam_policy_document" "deploy_frontend_permissions" {
       "s3:DeleteObject",
       "s3:ListObject",
       "s3:GetObject",
-      "s3:GetBucketLocation"
+      "s3:GetBucketLocation",
+      "s3:ListBucket"
     ]
     resources = [
       "arn:aws:s3:::${var.bucket_name}-*",
