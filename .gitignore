@@ -19,8 +19,12 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
-/terraform/aws-backend/.terraform/
-/terraform/aws-backend/terraform.tfstate
-/terraform/aws-backend/terraform.tfstate.backup
-/terraform/aws-backend/.terraform.lock.hcl
+
 /.idea/
+
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+.terraform.lock.hcl
+*.tfvars
+*.auto.tfvars
