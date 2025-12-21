@@ -24,7 +24,7 @@ data "aws_iam_policy_document" "lambda_update_counter_iam_policy_document" {
   statement {
     effect = "Allow"
     actions = ["dynamodb:UpdateItem"]
-    resources = [aws_dynamodb_table.visit_count.id]
+    resources = [aws_dynamodb_table.visit_count.arn]
   }
   statement {
     effect = "Allow"
