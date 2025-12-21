@@ -6,7 +6,7 @@ data "archive_file" "lambda_zip" {
 
 resource "aws_iam_role" "lambda_update_counter_role" {
   name = "lambda-update-counter-role"
-  assume_role_policy = jsondecode({
+  assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {

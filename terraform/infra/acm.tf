@@ -13,7 +13,7 @@ resource "aws_acm_certificate" "ssl_certificate" {
   provider = aws.us_east_1
 }
 
-resource "cloudflare_record" "ssl_certificate_validation_record" {
+resource "cloudflare_dns_record" "ssl_certificate_validation_record" {
   for_each = {
     for dvo in aws_acm_certificate.ssl_certificate.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
@@ -31,17 +31,18 @@ resource "cloudflare_record" "ssl_certificate_validation_record" {
 
 resource "aws_acm_certificate_validation" "ssl_certificate_validation" {
   certificate_arn = aws_acm_certificate.ssl_certificate.arn
-  validation_record_fqdns = [for record in cloudflare_record.ssl_certificate_validation_record : record.hostname]
+  validation_record_fqdns = [for record in cloudflare_dns_record.ssl_certificate_validation_record : trimsuffix(record.name, ".")]
 
   timeouts {
     create = "5m"
   }
 }
 
-resource "cloudflare_record" "website" {
+resource "cloudflare_dns_record" "website" {
   zone_id = data.aws_ssm_parameter.cloudflare_zone_id.value
   name = "@"
   content = aws_cloudfront_distribution.static_content_distribution.domain_name
   type = "CNAME"
+  ttl = 300
   proxied = false
 }
