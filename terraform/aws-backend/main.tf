@@ -1,7 +1,7 @@
 terraform {
   # backend "s3" {
   #   bucket         = "my-portfolio-infra-tf-state"
-  #   key            = "my-portfolio/terraform.tfstate"
+  #   key            = "my-portfolio-bootstrap/terraform.tfstate"
   #   region         = "us-east-1"
   #   dynamodb_table = "terraform-state-locking"
   #   encrypt        = true
