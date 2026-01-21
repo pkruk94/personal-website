@@ -1,0 +1,42 @@
+name: Destroy everything
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "destroy" to confirm'
+        required: true
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Validate confirmation
+        if: github.event.inputs.confirm != 'destroy'
+        run: |
+          echo "You must type 'destroy' to confirm"
+          exit 1
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.INFRA_APPLY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Terraform Init
+        working-directory: terraform/infra
+        run: terraform init
+
+      - name: Terraform Destroy
+        working-directory: terraform/infra
+        run: terraform destroy -auto-approve
