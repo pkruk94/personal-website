@@ -10,6 +10,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -29,17 +32,23 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          role-to-assume: ${{ vars.FRONTEND_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Get parameters from SSM
+        run: |
+          S3_BUCKET=$(aws ssm get-parameter --name "/infra/prod/s3/bucket_name" --query "Parameter.Value" --output text)
+          CF_DISTRIBUTION_ID=$(aws ssm get-parameter --name "/infra/prod/cloudfront/distribution_id" --query "Parameter.Value" --output text
+          echo "S3_BUCKET=$S3_BUCKET" >> $GITHUB_ENV
+          echo "CF_DISTRIBUTION_ID=$CF_DISTRIBUTION_ID" >> $GITHUB_ENV
 
       - name: Sync with S3
         run: |
-          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET_NAME }} --delete
+          aws s3 sync ./dist s3://${{ env.S3_BUCKET }} --delete
 
       - name: Invalidate CloudFront cache
         run: |
-          aws cloudfront create-invalidation --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+          aws cloudfront create-invalidation --distribution-id ${{ env.CF_DISTRIBUTION_ID }} --paths "/*"
 
       - name: Purge CloudFlare cache
         run: |
