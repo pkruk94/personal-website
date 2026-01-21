@@ -1,0 +1,104 @@
+name: Deploy AWS infra
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/infra/**'
+      - 'backend/lambda.py'
+  push:
+    branches:
+      - main
+    paths:
+      - 'terraform/infra/**'
+      - 'backend/lambda.py'
+  workflow_dispatch:
+
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Python Unit Tests
+        working-directory: backend
+        run: pytest tests/ -v
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.INFRA_PLAN_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Format Check
+        working-directory: terraform/infra
+        run: terraform fmt -check
+
+      - name: Terraform Init
+        working-directory: terraform/infra
+        run: terraform init
+
+      - name: Terraform Plan
+        id: plan
+        working-directory: terraform/infra
+        run: terraform plan -no-color
+
+      - name: Comment Plan on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '### Terraform Plan\n```\n${{ steps.plan.outputs.stdout }}\n```'
+            })
+
+
+  apply:
+    needs: plan
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ vars.INFRA_APPLY_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        working-directory: terraform/infra
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: terraform/infra
+        run: terraform apply -auto-approve
