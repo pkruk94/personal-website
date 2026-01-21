@@ -4,7 +4,7 @@ resource "aws_iam_openid_connect_provider" "github" {
   thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
 }
 
-data "aws_iam_policy_document" "oidc_assume_role_permissions" {
+data "aws_iam_policy_document" "oidc_plan_assume_role" {
   statement {
     actions = ["sts:AssumeRoleWithWebIdentity"]
     effect  = "Allow"
@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "oidc_assume_role_permissions" {
     }
     condition {
       test     = "StringLike"
-      values   = ["repo:pkruk94/personal-website:ref:refs/heads/main"]
+      values   = ["repo:pkruk94/personal-website:*"]
       variable = "token.actions.githubusercontent.com:sub"
     }
     condition {
@@ -24,3 +24,25 @@ data "aws_iam_policy_document" "oidc_assume_role_permissions" {
     }
   }
 }
+
+data "aws_iam_policy_document" "oidc_apply_assume_role" {
+  statement {
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+    effect = "Allow"
+    principals {
+      identifiers = [aws_iam_openid_connect_provider.github.arn]
+      type = "Federated"
+    }
+    condition {
+      test     = "StringEquals"
+      values = ["repo:pkruk94/my-portfolio:ref:refs/heads/main"]
+      variable = "token.actions.githubusercontent.com:sub"
+    }
+    condition {
+      test     = "StringEquals"
+      values   = ["sts.amazonaws.com"]
+      variable = "token.actions.githubusercontent.com:aud"
+    }
+  }
+}
+
