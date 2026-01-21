@@ -57,7 +57,8 @@ resource "aws_lambda_function" "visit_counter_lambda" {
     variables = {
       TABLE_NAME = "SiteStatistics",
       PARTITION_KEY_NAME = "GlobalCounter",
-      COUNTER_ID = "VisitCount"
+      COUNTER_ID = "VisitCount",
+      ALLOWED_ORIGIN = "https://${var.domain_name}"
     }
   }
 }
