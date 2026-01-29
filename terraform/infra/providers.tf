@@ -7,6 +7,11 @@ provider "aws" {
   alias = "us_east_1"
 }
 
+data "aws_ssm_parameter" "cloudflare_dns_token" {
+  name = "/infra/prod/cloudflare/dns_api_token"
+  with_decryption = true
+}
+
 provider "cloudflare" {
-  api_token = var.cloudflare_token
+  api_token = data.aws_ssm_parameter.cloudflare_dns_token
 }

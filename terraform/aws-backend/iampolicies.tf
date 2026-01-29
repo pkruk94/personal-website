@@ -11,7 +11,8 @@ data "aws_iam_policy_document" "deploy_infrastructure_permissions" {
       "cloudwatch:*",
       "acm:*",
       "iam:GetRole",
-      "iam:PassRole"
+      "iam:PassRole",
+      "ssm:GetParameter"
     ]
     resources = ["*"]
   }
@@ -69,7 +70,8 @@ data "aws_iam_policy_document" "plan_infrastructure_permission" {
       "acm:List*",
       "iam:GetRole",
       "iam:GetPolicy",
-      "iam:GetPolicyVersion"
+      "iam:GetPolicyVersion",
+      "ssm:GetParameter"
     ]
     resources = ["*"]
   }
