@@ -39,9 +39,13 @@ jobs:
       - name: Get parameters from SSM
         run: |
           S3_BUCKET=$(aws ssm get-parameter --name "/infra/prod/s3/bucket_name" --query "Parameter.Value" --output text)
-          CF_DISTRIBUTION_ID=$(aws ssm get-parameter --name "/infra/prod/cloudfront/distribution_id" --query "Parameter.Value" --output text
+          CF_DISTRIBUTION_ID=$(aws ssm get-parameter --name "/infra/prod/cloudfront/distribution_id" --query "Parameter.Value" --output text)
+          CLOUDFLARE_ZONE_ID=$(aws ssm get-parameter --name "/infra/prod/cloudflare/cloudflare_zone_id" --with-decryption --query "Parameter.Value" --output text)
+          CLOUDFLARE_CACHE_API_TOKEN=$(aws ssm get-parameter --name "/infra/prod/cloudflare/cache_api_token" --with-decryption --query "Parameter.Value" --output text)
           echo "S3_BUCKET=$S3_BUCKET" >> $GITHUB_ENV
           echo "CF_DISTRIBUTION_ID=$CF_DISTRIBUTION_ID" >> $GITHUB_ENV
+          echo "CLOUDFLARE_ZONE_ID=$CLOUDFLARE_ZONE_ID" >> $GITHUB_ENV
+          echo "CLOUDFLARE_CACHE_API_TOKEN=$CLOUDFLARE_CACHE_API_TOKEN" >> $GITHUB_ENV
 
       - name: Sync with S3
         run: |
@@ -53,7 +57,7 @@ jobs:
 
       - name: Purge CloudFlare cache
         run: |
-          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ secrets.CLOUDFLARE_ZONE_ID }}/purge_cache" \
-          -H "Authorization: Bearer ${{ secrets.CLOUDFLARE_API_TOKEN }}" \
+          curl -X POST "https://api.cloudflare.com/client/v4/zones/${{ env.CLOUDFLARE_ZONE_ID }}/purge_cache" \
+          -H "Authorization: Bearer ${{ env.CLOUDFLARE_CACHE_API_TOKEN }}" \
           -H "Content-Type: application/json" \
           --data '{"purge_everything":true}'
