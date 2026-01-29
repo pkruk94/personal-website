@@ -9,14 +9,18 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 os.environ.update({
     'TABLE_NAME': 'test-table',
     'PARTITION_KEY_NAME': 'id',
-    'COUNTER_ID': 'visitor-counter'
+    'COUNTER_ID': 'visitor-counter',
+    'AWS_DEFAULT_REGION': 'us-east-1'
 })
 
 import importlib.util
-spec = importlib.util.spec_from_file_location("lambda_module",
-    os.path.join(os.path.dirname(__file__), '..', 'lambda.py'))
-lambda_module = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(lambda_module)
+
+mock_dynamodb = MagicMock()
+with patch('boto3.resource', return_value=mock_dynamodb):
+    spec = importlib.util.spec_from_file_location("lambda_module",
+        os.path.join(os.path.dirname(__file__), '..', 'lambda.py'))
+    lambda_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(lambda_module)
 
 class TestLambdaHandler:
 
