@@ -1,6 +1,6 @@
 # Astro-Vitae | Personalized CV with minimal efforts
 
-![Astro-Vitae | Personalized CV with minimal efforts](public/screenshot.jpeg)
+![Astro-Vitae | Personalized CV with minimal efforts](frontend/public/screenshot.jpeg)
 
 Astro-Vitae is a free, personalized CV template with sleek & minimal design which helps in simplifying the process of getting a CV for yourself. So much so that someone with minimal knowledge of coding can easily get their CV just by updating their details.
 
@@ -67,7 +67,7 @@ npm run dev
 
 In order to change the content of the CV, all you have to do is update it in the `content.js` file in `/src` folder.
 
-![Content Code](public/content_code.png)
+![Content Code](frontend/public/content_code.png)
 
 In `src/content.js` all variables contain information that is to be reflected in the UI. In order to change it, simply update the values with your data. The personal information is fairly simple, content for the likes of work, projects, etc are stored as JavaScript objects.
 
@@ -75,7 +75,7 @@ In `src/content.js` all variables contain information that is to be reflected in
 
 To add or remove a field from the CV, simply go to `Container.astro` in `src/components/`
 
-![Accordion_code](public/accordion_code.png)
+![Accordion_code](frontend/public/accordion_code.png)
 
 - To Add a new field, add a new `<AccordionLayout />` component, with appropriate props and child component. Make sure add the data of field in proper format in `content.js`.
 - To Remove an already existing field, simply comment out the `<AccordionLayout />` component of that particular field or remove it. Removing its content from `content.js` is a choice.
