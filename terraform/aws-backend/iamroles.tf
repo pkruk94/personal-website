@@ -27,3 +27,13 @@ resource "aws_iam_role_policy_attachment" "github_actions_plan_policy_attachment
   policy_arn = aws_iam_policy.plan_infrastructure_policy.arn
   role = aws_iam_role.github-actions-infrastructure-plan-role.name
 }
+
+resource "aws_iam_role" "github-actions-dns-record-deploy-role" {
+  name = "GitHubActionsDnsRecordDeployRole"
+  assume_role_policy = data.aws_iam_policy_document.oidc_dns_record_assume_role.json
+}
+
+resource "aws_iam_role_policy_attachment" "github_actions_dns_record_policy_attachment" {
+  policy_arn = aws_iam_policy.deploy-dns-record.arn
+  role       = aws_iam_role.github-actions-dns-record-deploy-role.name
+}

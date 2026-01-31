@@ -77,6 +77,21 @@ data "aws_iam_policy_document" "plan_infrastructure_permission" {
   }
 }
 
+data "aws_caller_identity" "current" {}
+
+data "aws_region" "current" {}
+
+data "aws_iam_policy_document" "deploy_dns_record" {
+  statement {
+    effect = "Allow"
+    actions = ["ssm:GetParameter"]
+    resources = [
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/dns/prod/cloudflare/*",
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/infra/prod/cloudfront/domain_name"
+    ]
+  }
+}
+
 resource "aws_iam_policy" "deploy_infrastructure_policy" {
   name        = "GitHubActionsInfrastructureDeployPolicy"
   description = "Allows for creating infrastructure for my personal website project."
@@ -93,4 +108,10 @@ resource "aws_iam_policy" "plan_infrastructure_policy" {
   name = "GitHubActionsInfrastructurePlanPolicy"
   description = "Read-only access for terraform plan"
   policy = data.aws_iam_policy_document.plan_infrastructure_permission.json
+}
+
+resource "aws_iam_policy" "deploy-dns-record" {
+  name = "GitHubActionsDeployDnsRecordPolicy"
+  description = "Retrieve necessary parameters for CloudFlare from SSM"
+  policy = data.aws_iam_policy_document.deploy_dns_record.json
 }

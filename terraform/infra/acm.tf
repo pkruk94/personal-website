@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "cloudflare_zone_id" {
-  name = "/infra/prod/cloudflare/cloudflare_zone_id"
-}
-
 resource "aws_acm_certificate" "ssl_certificate" {
   domain_name = var.domain_name
   validation_method = "DNS"
@@ -36,13 +32,4 @@ resource "aws_acm_certificate_validation" "ssl_certificate_validation" {
   timeouts {
     create = "5m"
   }
-}
-
-resource "cloudflare_dns_record" "website" {
-  zone_id = data.aws_ssm_parameter.cloudflare_zone_id.value
-  name = "@"
-  content = aws_cloudfront_distribution.static_content_distribution.domain_name
-  type = "CNAME"
-  ttl = 300
-  proxied = false
 }
