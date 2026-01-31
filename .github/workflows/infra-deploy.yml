@@ -6,16 +6,26 @@ on:
       - 'terraform/infra/**'
       - 'backend/lambda.py'
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
       - 'terraform/infra/**'
       - 'backend/lambda.py'
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
 
+env:
+  ENVIRONMENT: ${{ inputs.environment || 'dev' }}
 
 jobs:
   plan:
+    environment: ${{ inputs.environment || 'dev' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -59,7 +69,7 @@ jobs:
       - name: Terraform Plan
         id: plan
         working-directory: terraform/infra
-        run: terraform plan -no-color
+        run: terraform plan -var-file=environments/${{ env.ENVIRONMENT }}.tfvars -no-color
 
       - name: Comment Plan on PR
         if: always() && github.event_name == 'pull_request'
@@ -75,8 +85,9 @@ jobs:
 
 
   apply:
+    environment: ${{ inputs.environment || 'dev' }}
     needs: plan
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -101,4 +112,4 @@ jobs:
 
       - name: Terraform Apply
         working-directory: terraform/infra
-        run: terraform apply -auto-approve
+        run: terraform apply -var-file=environments/${{ env.ENVIRONMENT }}.tfvars -auto-approve
