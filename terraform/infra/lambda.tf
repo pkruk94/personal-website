@@ -5,7 +5,7 @@ data "archive_file" "lambda_zip" {
 }
 
 resource "aws_iam_role" "lambda_update_counter_role" {
-  name = "lambda-update-counter-role"
+  name = "lambda-update-counter-role-${var.environment}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -40,25 +40,25 @@ data "aws_iam_policy_document" "lambda_update_counter_iam_policy_document" {
 }
 
 resource "aws_iam_role_policy" "lambda_update_counter_execution_policy" {
-  name = "VisitCounterExecutionPolicy"
+  name   = "VisitCounterExecutionPolicy"
   policy = data.aws_iam_policy_document.lambda_update_counter_iam_policy_document.json
   role   = aws_iam_role.lambda_update_counter_role.id
 }
 
 resource "aws_lambda_function" "visit_counter_lambda" {
-  filename = data.archive_file.lambda_zip.output_path
-  function_name = "VisitCounterLambda"
-  role          = aws_iam_role.lambda_update_counter_role.arn
-  handler = "lambda.lambda_handler"
+  filename         = data.archive_file.lambda_zip.output_path
+  function_name    = "VisitCounterLambda-" + upper(var.environment)
+  role             = aws_iam_role.lambda_update_counter_role.arn
+  handler          = "lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha512
-  runtime = "python3.11"
+  runtime          = "python3.11"
 
   environment {
     variables = {
-      TABLE_NAME = "SiteStatistics",
+      TABLE_NAME         = "SiteStatistics-" + upper(var.environment)
       PARTITION_KEY_NAME = "GlobalCounter",
-      COUNTER_ID = "VisitCount",
-      ALLOWED_ORIGIN = "https://${var.domain_name}"
+      COUNTER_ID         = "VisitCount",
+      ALLOWED_ORIGIN     = var.environment == "prod" ? "https://${var.domain_name}" : "*"
     }
   }
 }
