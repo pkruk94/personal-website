@@ -25,6 +25,6 @@ pnpm-debug.log*
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.lock.hcl
-*.tfvars
+secrets.tfvars
 *.auto.tfvars
 .terraform.tfstate.lock.info

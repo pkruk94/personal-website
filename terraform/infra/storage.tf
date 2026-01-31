@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "static_content_bucket_prefix" {
-  name = "/infra/prod/s3/static_content_bucket_prefix"
-}
-
 resource "random_string" "random_suffix" {
   length  = 8
   special = false
@@ -13,9 +9,9 @@ resource "aws_s3_bucket" "static_content_bucket" {
   bucket        = "${data.aws_ssm_parameter.static_content_bucket_prefix.value}-${random_string.random_suffix.result}"
   force_destroy = true
 
-  tags = {
+  tags = merge(local.common_tags, {
     Name = "Static content bucket"
-  }
+  })
 }
 
 resource "aws_s3_bucket_server_side_encryption_configuration" "static_content_bucket_crypto_conf" {

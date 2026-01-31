@@ -6,9 +6,20 @@ on:
       confirm:
         description: 'Type "destroy" to confirm'
         required: true
+      environment:
+        description: 'Environment to destroy'
+        required: true
+        type: choice
+        options:
+          - dev
+          - prod
+
+env:
+  ENVIRONMENT: ${{ inputs.environment }}
 
 jobs:
   destroy:
+    environment: ${{ inputs.environment || 'dev' }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -39,4 +50,4 @@ jobs:
 
       - name: Terraform Destroy
         working-directory: terraform/infra
-        run: terraform destroy -auto-approve
+        run: terraform destroy -var-file=environments/${{ inputs.environment }}.tfvars -auto-approve

@@ -31,7 +31,7 @@ def lambda_handler(event, context):
             Key={
                 PARTITION_KEY_NAME: COUNTER_ID
             },
-            UpdateExpression="SET CounterValue = if_not_exists(CounterValue, :start) + :inc", # TODO counter value? Co to jest? Moze to sparametryzowac?
+            UpdateExpression="SET CounterValue = if_not_exists(CounterValue, :start) + :inc",
             ExpressionAttributeValues={':inc': 1,':start': 0},
             ReturnValues="UPDATED_NEW"
         )
