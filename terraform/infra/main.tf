@@ -1,9 +1,9 @@
 terraform {
   backend "s3" {
-    bucket         = "personal-website-tf-state-${var.environment}"
-    key            = "personal-website-tf-state-infra-${var.environment}/terraform.tfstate"
+    bucket         = "personal-website-tf-state"
+    key            = "personal-website-tf-state-infra/terraform.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-state-locking-${var.environment}"
+    dynamodb_table = "terraform-state-locking"
     encrypt        = true
   }
 
