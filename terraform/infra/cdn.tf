@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "static_content_distribution" {
 
   viewer_certificate {
     acm_certificate_arn            = var.environment == "prod" ?
-      aws_acm_certificate_validation.ssl_certificate_validation.certificate_arn : null
+      aws_acm_certificate_validation.ssl_certificate_validation.certificate_arn[0] : null
     cloudfront_default_certificate = var.environment == "prod" ? false : true
     ssl_support_method             = var.environment == "prod" ? "sni-only" : null
     minimum_protocol_version       = var.environment == "prod" ? "TLSv1.2_2021" : null
