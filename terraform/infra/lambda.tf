@@ -55,7 +55,7 @@ resource "aws_lambda_function" "visit_counter_lambda" {
 
   environment {
     variables = {
-      TABLE_NAME         = "SiteStatistics-" + upper(var.environment)
+      TABLE_NAME         = aws_dynamodb_table.visit_count.name
       PARTITION_KEY_NAME = "GlobalCounter",
       COUNTER_ID         = "VisitCount",
       ALLOWED_ORIGIN     = var.environment == "prod" ? "https://${var.domain_name}" : "*"
