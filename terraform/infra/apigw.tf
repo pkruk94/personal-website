@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "lambda_api" {
-  name          = "visitor-counter-api"
+  name          = "visitor-counter-api-${var.environment}"
   protocol_type = "HTTP"
 }
 

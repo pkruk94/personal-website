@@ -10,7 +10,7 @@ resource "aws_s3_bucket" "static_content_bucket" {
   force_destroy = true
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
     Name = "Static content bucket"
   }
 }
