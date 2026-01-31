@@ -1,5 +1,5 @@
 resource "aws_apigatewayv2_api" "lambda_api" {
-  name          = "visitor-counter-api-${var.environment}"
+  name          = "VisitorCounterAPI-${var.environment}"
   protocol_type = "HTTP"
 
   tags = local.common_tags
@@ -38,5 +38,3 @@ resource "aws_lambda_permission" "api_gw_invoke" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.lambda_api.execution_arn}/*/*"
 }
-
-

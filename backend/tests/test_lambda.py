@@ -18,9 +18,10 @@ import importlib.util
 mock_dynamodb = MagicMock()
 with patch('boto3.resource', return_value=mock_dynamodb):
     spec = importlib.util.spec_from_file_location("lambda_module",
-        os.path.join(os.path.dirname(__file__), '..', 'lambda.py'))
+                                                  os.path.join(os.path.dirname(__file__), '..', 'lambda.py'))
     lambda_module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(lambda_module)
+
 
 class TestLambdaHandler:
 
@@ -29,7 +30,6 @@ class TestLambdaHandler:
         'PARTITION_KEY_NAME': 'id',
         'COUNTER_ID': 'visitor-counter'
     })
-
     @patch.object(lambda_module, 'dynamodb')
     def test_successful_counter_increment(self, mock_dynamodb):
         mock_table = MagicMock()
@@ -91,17 +91,17 @@ class TestLambdaHandler:
 
     @patch.object(lambda_module, 'dynamodb')
     def test_first_counter_increment_from_zero(self, mock_dynamodb):
-            mock_table = MagicMock()
-            mock_dynamodb.Table.return_value = mock_table
-            mock_table.update_item.return_value = {
-                'Attributes' : {'CounterValue' : 1}
-            }
+        mock_table = MagicMock()
+        mock_dynamodb.Table.return_value = mock_table
+        mock_table.update_item.return_value = {
+            'Attributes': {'CounterValue': 1}
+        }
 
-            result = lambda_module.lambda_handler({}, {})
+        result = lambda_module.lambda_handler({}, {})
 
-            assert result['statusCode'] == 200
-            body = json.loads(result['body'])
-            assert body['newValue'] == 1
+        assert result['statusCode'] == 200
+        body = json.loads(result['body'])
+        assert body['newValue'] == 1
 
     @patch.object(lambda_module, 'TABLE_NAME', None)
     @patch.object(lambda_module, 'dynamodb')

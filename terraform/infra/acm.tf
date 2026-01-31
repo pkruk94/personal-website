@@ -32,7 +32,7 @@ resource "aws_acm_certificate_validation" "ssl_certificate_validation" {
   count                   = var.environment == "prod" ? 1 : 0
   certificate_arn         = aws_acm_certificate.ssl_certificate[0].arn
   validation_record_fqdns = [
-    for record in cloudflare_dns_record.ssl_certificate_validation_record :trimsuffix(record.name, ".")
+    for record in cloudflare_dns_record.ssl_certificate_validation_record : trimsuffix(record.name, ".")
   ]
 
   timeouts {

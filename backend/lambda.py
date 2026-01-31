@@ -5,6 +5,7 @@ import os
 from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
+
 TABLE_NAME = os.environ.get('TABLE_NAME')
 PARTITION_KEY_NAME = os.environ.get('PARTITION_KEY_NAME')
 COUNTER_ID = os.environ.get('COUNTER_ID')

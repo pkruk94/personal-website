@@ -40,7 +40,7 @@ data "aws_iam_policy_document" "oidc_apply_assume_role" {
     }
     condition {
       test     = "StringEquals"
-      values = ["repo:pkruk94/my-portfolio:ref:refs/heads/main"]
+      values = ["repo:pkruk94/personal-website:ref:refs/heads/main"]
       variable = "token.actions.githubusercontent.com:sub"
     }
     condition {
