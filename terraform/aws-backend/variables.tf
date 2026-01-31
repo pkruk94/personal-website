@@ -21,3 +21,8 @@ variable "cloudflare_zone_id" {
   type        = string
   sensitive   = true
 }
+
+variable "environment" {
+  description = "Environment to deploy to"
+  type = string
+}

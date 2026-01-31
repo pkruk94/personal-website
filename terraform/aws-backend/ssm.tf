@@ -1,43 +1,46 @@
 resource "aws_ssm_parameter" "cf_dns_token" {
-  name  = "/dns/prod/cloudflare/dns_api_token"
+  count = var.environment == "prod" ? 1 : 0
+  name  = "/dns/${var.environment}/cloudflare/dns_api_token"
   type  = "SecureString"
   value = var.cf_dns_token
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
     ManagedBy  = "terraform--bootstrap"
   }
 }
 
 resource "aws_ssm_parameter" "cf_cache_token" {
-  name  = "/dns/prod/cloudflare/cache_api_token"
+  count = var.environment == "prod" ? 1 : 0
+  name  = "/dns/${var.environment}/cloudflare/cache_api_token"
   type  = "SecureString"
   value = var.cf_cache_token
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
     ManagedBy  = "terraform-bootstrap"
   }
 }
 
 resource "aws_ssm_parameter" "cloudflare_zone_id" {
-  name  = "/dns/prod/cloudflare/cloudflare_zone_id"
+  count = var.environment == "prod" ? 1 : 0
+  name  = "/dns/${var.environment}/cloudflare/cloudflare_zone_id"
   type  = "SecureString"
   value = var.cloudflare_zone_id
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
     ManagedBy = "terraform-bootstrap"
   }
 }
 
 resource "aws_ssm_parameter" "static_content_bucket_prefix" {
-  name = "/infra/prod/s3/static_content_bucket_prefix"
+  name = "/infra/${var.environment}/s3/static_content_bucket_prefix"
   type = "String"
-  value = var.bucket_name
+  value = var.bucket_name + "-" + var.environment
 
   tags = {
-    Environment = "prod"
+    Environment = var.environment
     ManagedBy = "terraform-bootstrap"
   }
 }
