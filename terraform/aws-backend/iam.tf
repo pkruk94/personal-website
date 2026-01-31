@@ -54,10 +54,9 @@ resource "aws_iam_policy" "apply_infrastructure_policy" {
   description = "Allows for creating infrastructure for my personal website project."
   policy      = data.aws_iam_policy_document.apply_infrastructure_permissions.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_policy" "plan_infrastructure_policy" {
@@ -65,30 +64,27 @@ resource "aws_iam_policy" "plan_infrastructure_policy" {
   description = "Read-only access for terraform plan"
   policy      = data.aws_iam_policy_document.plan_infrastructure_permission.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role" "github_actions_infrastructure_apply_role" {
   name               = "GitHubActionsInfrastructureApplyRole"
   assume_role_policy = data.aws_iam_policy_document.oidc_apply_assume_role.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role" "github_actions_infrastructure_plan_role" {
   name               = "GitHubActionsInfrastructurePlanRole"
   assume_role_policy = data.aws_iam_policy_document.oidc_plan_assume_role.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_apply_policy_attachment" {
@@ -138,20 +134,18 @@ resource "aws_iam_policy" "deploy_frontend_policy" {
   description = "Allows for updating S3 bucket and invalidating CloudFront cache."
   policy      = data.aws_iam_policy_document.deploy_frontend_permissions.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role" "github_actions_frontend_deploy_role" {
   name               = "GitHubActionsFrontendDeployRole"
   assume_role_policy = data.aws_iam_policy_document.oidc_apply_assume_role.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_frontend_deploy_role_policy_attachment" {
@@ -177,20 +171,18 @@ resource "aws_iam_policy" "deploy_dns_record" {
   description = "Retrieve necessary parameters for CloudFlare from SSM"
   policy = data.aws_iam_policy_document.deploy_dns_record_policy.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role" "github_actions_dns_record_deploy_role" {
   name               = "GitHubActionsDnsRecordDeployRole"
   assume_role_policy = data.aws_iam_policy_document.oidc_dns_record_assume_role.json
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_iam_role_policy_attachment" "github_actions_dns_record_policy_attachment" {

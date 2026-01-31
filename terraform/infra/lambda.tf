@@ -34,13 +34,13 @@ data "aws_iam_policy_document" "lambda_update_counter_iam_policy_document" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:us-east-1:*:*"
+      "arn:aws:logs:us-east-1:*:log-group:/aws/lambda/VisitCounterLambda-${upper(var.environment)}:*"
     ]
   }
 }
 
 resource "aws_iam_role_policy" "lambda_update_counter_execution_policy" {
-  name   = "VisitCounterExecutionPolicy"
+  name   = "VisitCounterExecutionPolicy-${upper(var.environment)}"
   policy = data.aws_iam_policy_document.lambda_update_counter_iam_policy_document.json
   role   = aws_iam_role.lambda_update_counter_role.id
 }

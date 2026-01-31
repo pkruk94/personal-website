@@ -1,5 +1,5 @@
 resource "aws_cloudfront_origin_access_control" "static_content_origin_access_control" {
-  name                              = "static-content-origin-access-control"
+  name                              = "static-content-origin-access-control-${var.environment}"
   origin_access_control_origin_type = "s3"
   signing_behavior                  = "always"
   signing_protocol                  = "sigv4"
@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "static_content_distribution" {
 
   viewer_certificate {
     acm_certificate_arn            = var.environment == "prod" ?
-      aws_acm_certificate_validation.ssl_certificate_validation.certificate_arn[0] : null
+      aws_acm_certificate_validation.ssl_certificate_validation[0].certificate_arn : null
     cloudfront_default_certificate = var.environment == "prod" ? false : true
     ssl_support_method             = var.environment == "prod" ? "sni-only" : null
     minimum_protocol_version       = var.environment == "prod" ? "TLSv1.2_2021" : null
@@ -45,4 +45,6 @@ resource "aws_cloudfront_distribution" "static_content_distribution" {
       restriction_type = "none"
     }
   }
+
+  tags = local.common_tags
 }

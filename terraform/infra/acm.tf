@@ -8,6 +8,8 @@ resource "aws_acm_certificate" "ssl_certificate" {
   }
 
   provider = aws.us_east_1
+
+  tags = local.common_tags
 }
 
 resource "cloudflare_dns_record" "ssl_certificate_validation_record" {

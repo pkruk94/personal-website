@@ -1,12 +1,21 @@
 resource "aws_apigatewayv2_api" "lambda_api" {
   name          = "visitor-counter-api-${var.environment}"
   protocol_type = "HTTP"
+
+  tags = local.common_tags
 }
 
 resource "aws_apigatewayv2_stage" "lambda_stage" {
   api_id      = aws_apigatewayv2_api.lambda_api.id
   name        = "$default"
   auto_deploy = true
+
+  default_route_settings {
+    throttling_rate_limit  = 100
+    throttling_burst_limit = 50
+  }
+
+  tags = local.common_tags
 }
 
 resource "aws_apigatewayv2_integration" "lambda_integration" {

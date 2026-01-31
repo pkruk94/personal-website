@@ -6,4 +6,6 @@ resource "aws_dynamodb_table" "visit_count" {
     name = "StatisticId"
     type = "S"
   }
+
+  tags = local.common_tags
 }

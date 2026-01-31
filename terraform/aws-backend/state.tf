@@ -2,10 +2,9 @@ resource "aws_s3_bucket" "terraform_state" {
   bucket        = "personal-website-tf-state"
   force_destroy = true
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
 
 resource "aws_s3_bucket_versioning" "terraform_bucket_versioning" {
@@ -33,8 +32,7 @@ resource "aws_dynamodb_table" "terraform_locks" {
     type = "S"
   }
 
-  tags = {
-    Environment = var.environment
+  tags = merge(local.common_tags, {
     ManagedBy = "terraform-bootstrap"
-  }
+  })
 }
