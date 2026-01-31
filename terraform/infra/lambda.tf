@@ -47,7 +47,7 @@ resource "aws_iam_role_policy" "lambda_update_counter_execution_policy" {
 
 resource "aws_lambda_function" "visit_counter_lambda" {
   filename         = data.archive_file.lambda_zip.output_path
-  function_name    = "VisitCounterLambda-" + upper(var.environment)
+  function_name    = "VisitCounterLambda-${upper(var.environment)}"
   role             = aws_iam_role.lambda_update_counter_role.arn
   handler          = "lambda.lambda_handler"
   source_code_hash = data.archive_file.lambda_zip.output_base64sha512
