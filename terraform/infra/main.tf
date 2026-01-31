@@ -1,11 +1,11 @@
 terraform {
-  # backend "s3" {
-  #   bucket         = "personal-website-tf-state"
-  #   key            = "personal-website-infra/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   dynamodb_table = "terraform-state-locking"
-  #   encrypt        = true
-  # }
+  backend "s3" {
+    bucket         = "personal-website-tf-state"
+    key            = "personal-website-tf-state-infra/terraform.tfstate"
+    region         = "us-east-1"
+    dynamodb_table = "terraform-state-locking"
+    encrypt        = true
+  }
 
   required_providers {
     aws = {

@@ -1,7 +1,3 @@
-data "aws_ssm_parameter" "static_content_bucket_prefix" {
-  name = "/infra/prod/s3/static_content_bucket_prefix"
-}
-
 resource "random_string" "random_suffix" {
   length  = 8
   special = false
@@ -14,6 +10,7 @@ resource "aws_s3_bucket" "static_content_bucket" {
   force_destroy = true
 
   tags = {
+    Environment = "prod"
     Name = "Static content bucket"
   }
 }

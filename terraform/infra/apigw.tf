@@ -30,9 +30,4 @@ resource "aws_lambda_permission" "api_gw_invoke" {
   source_arn = "${aws_apigatewayv2_api.lambda_api.execution_arn}/*/*"
 }
 
-output "api_gateway_url" {
-  description = "URL for API Gateway"
-  value = aws_apigatewayv2_stage.lambda_stage.invoke_url
-}
-
 
