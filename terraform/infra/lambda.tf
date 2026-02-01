@@ -18,6 +18,10 @@ resource "aws_iam_role" "lambda_update_counter_role" {
       }
     ]
   })
+
+  tags = merge(local.common_tags, {
+    Name = "Lambda Update Counter Role"
+  })
 }
 
 data "aws_iam_policy_document" "lambda_update_counter_iam_policy_document" {
@@ -61,4 +65,8 @@ resource "aws_lambda_function" "visit_counter_lambda" {
       ALLOWED_ORIGIN     = var.environment == "prod" ? "https://${var.domain_name}" : "*"
     }
   }
+
+  tags = merge(local.common_tags, {
+    Name = "Visit Counter Lambda"
+  })
 }

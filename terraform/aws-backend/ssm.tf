@@ -32,8 +32,8 @@ resource "aws_ssm_parameter" "cloudflare_zone_id" {
 }
 
 resource "aws_ssm_parameter" "static_content_bucket_prefix" {
-  name = "/infra/${var.environment}/s3/static_content_bucket_prefix"
-  type = "String"
+  name  = "/infra/${var.environment}/s3/static_content_bucket_prefix"
+  type  = "String"
   value = "${var.bucket_name}-${var.environment}"
 
   tags = merge(local.common_tags, {
