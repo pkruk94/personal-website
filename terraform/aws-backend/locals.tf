@@ -1,7 +1,7 @@
 locals {
   common_tags = {
     Environment = var.environment
-    ManagedBy = "terraform"
-    Project = "personal-website"
+    ManagedBy   = "terraform-bootstrap"
+    Project     = "personal-website"
   }
 }

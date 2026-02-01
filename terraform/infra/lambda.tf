@@ -5,7 +5,7 @@ data "archive_file" "lambda_zip" {
 }
 
 resource "aws_iam_role" "lambda_update_counter_role" {
-  name = "lambda-update-counter-role-${var.environment}"
+  name = "LambdaUpdateCounterRole-${var.environment}"
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -17,6 +17,10 @@ resource "aws_iam_role" "lambda_update_counter_role" {
         }
       }
     ]
+  })
+
+  tags = merge(local.common_tags, {
+    Name = "Lambda Update Counter Role"
   })
 }
 
@@ -56,9 +60,13 @@ resource "aws_lambda_function" "visit_counter_lambda" {
   environment {
     variables = {
       TABLE_NAME         = aws_dynamodb_table.visit_count.name
-      PARTITION_KEY_NAME = "GlobalCounter",
+      PARTITION_KEY_NAME = "StatisticId",
       COUNTER_ID         = "VisitCount",
       ALLOWED_ORIGIN     = var.environment == "prod" ? "https://${var.domain_name}" : "*"
     }
   }
+
+  tags = merge(local.common_tags, {
+    Name = "Visit Counter Lambda"
+  })
 }
